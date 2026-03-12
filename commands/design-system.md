@@ -12,7 +12,8 @@ You MUST:
 
 - Follow templates/system-design-template.md
 - Apply rules from skills/architecture-patterns.md
-- Apply stack rules from skills/springboot-flutter-aws-playbook.md (if applicable)
+- Apply stack rules from skills/springboot-flutter-aws-playbook.md (covers Spring Boot + Flutter + Python + RAG + Orchestration + AWS)
+- If the system involves AI/ML components, apply RAG and Orchestration rules from the playbook
 - Enforce NFR quantification
 - Include rollback strategy
 - Include failure modes
@@ -29,6 +30,7 @@ You MUST:
    - Define target scale and usage patterns
    - Identify domain-specific requirements
    - Identify compliance/security considerations
+   - If AI/RAG: identify data sources, retrieval patterns, and LLM provider constraints
 
 2. ARCHITECTURE PHASE
    - Define system boundaries
@@ -37,6 +39,7 @@ You MUST:
    - Define control flow
    - Identify SPOF risks
    - Define scaling model (horizontal/vertical/event-driven)
+   - If AI/RAG components: identify retrieval pipeline stages, orchestration pattern (Pipeline / DAG / Agent Loop / Hybrid), and LLM selection with justification
 
 3. SYSTEM DESIGN PHASE
    - Define APIs (OpenAPI-first style)
@@ -49,6 +52,8 @@ You MUST:
    - Define migration + rollback strategy
    - Define caching strategy
    - Define event contracts (if async)
+   - If RAG system: define chunking strategy, embedding model + version, vector DB choice + index config, retrieval top-K, re-ranking strategy, and prompt version control
+   - If Orchestration: define orchestration pattern, tool definitions (name/schema/timeout), agent state persistence, max turn budget, and prompt chain versioning
 
 4. DEVOPS PHASE
    - Define environment split (dev/stage/prod)
@@ -71,6 +76,7 @@ You MUST:
    - Failure modes documented
    - Risk register present
    - Standards version referenced
+   - If AI: embedding model versioned, RAG eval framework defined, prompt IDs set, orchestration pattern justified
 
 If any section is missing → regenerate output.
 
@@ -246,6 +252,23 @@ Must include:
 
 ---
 
+# 14b. AI / RAG / Orchestration Design (include if AI components are present)
+
+- Orchestration pattern selected (Pipeline / DAG / Agent Loop / Hybrid) and justification
+- RAG pipeline stages: Ingestion → Retrieval → Generation → Evaluation
+- Embedding model name + version + chunk size + overlap strategy
+- Vector DB choice + index type + filter field definitions
+- Retrieval top-K, re-ranking strategy, latency SLO (target ≤ 150ms p95)
+- Prompt versions: system prompt ID, user prompt ID, context injection format, token budget
+- LLM selection: provider, model, version, fallback model
+- Hallucination guardrail strategy
+- RAG evaluation framework + offline metrics (Faithfulness, Answer Relevance, Context Recall, Context Precision)
+- Agent tool definitions: name, input schema, output schema, timeout per tool
+- Agent state persistence strategy + max turn budget
+- Token usage monitoring + anomaly alert threshold
+
+---
+
 # 15. Cost Analysis (High-Level)
 
 - Major cost drivers
@@ -295,9 +318,13 @@ CONSTRAINTS
 - No generic architecture diagrams.
 - Must be specific to provided problem.
 - Must reference Spring Boot + Flutter + PostgreSQL + AWS if stack not overridden.
+- Python + FastAPI applies for AI/ML service components.
 - Must enforce versioning and idempotency.
 - Must include rollback.
 - Must include quantified NFR.
+- If AI/RAG components are present: must specify embedding model version, chunking strategy, vector DB index config, and RAG eval framework.
+- If orchestration is present: must specify orchestration pattern, tool schemas, agent state strategy, and prompt version IDs.
+- LLM selection must be justified. Model name and version must be explicitly stated.
 
 ---
 

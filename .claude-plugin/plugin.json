@@ -1,13 +1,20 @@
 {
   "name": "ai-architect-plugin",
-  "version": "0.1.0",
-  "description": "Idea -> Design -> Spec -> Implementation -> Deployment. Generates production-grade system design documents.",
+  "version": "0.2.0",
+  "description": "Full engineering lifecycle plugin for AI Architects: Design, Implement, Test, Review, and Fix production-grade systems.",
   "author": {
     "name": "Yuvasree",
     "email": "yuvasree.thupalli@nvipani.com"
   },
   "license": "MIT",
-  "keywords": ["architecture", "system-design", "engineering", "design"],
+  "keywords": ["architecture", "system-design", "engineering", "implementation", "testing", "code-review", "rag", "ai-orchestration", "shopconnect"],
   "commands": "./commands/",
-  "skills": ["./skills/architecture-patterns"]
+  "skills": [
+    "./skills/architecture-patterns",
+    "./skills/architecture-patterns.md",
+    "./skills/springboot-flutter-aws-playbook.md",
+    "./skills/implementation-patterns.md",
+    "./skills/testing-playbook.md",
+    "./skills/code-review-standards.md"
+  ]
 }

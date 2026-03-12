@@ -1,6 +1,9 @@
 workflows:
+
+  # ── DESIGN ──────────────────────────────────────────────────────────────────
   design-system:
-    description: "Idea -> Design -> Spec -> Implementation -> Deployment. Generates production-grade system design documents."
+    description: "Idea → Design → Spec → Deployment blueprint. Generates production-grade system design documents."
+    command: /design-system
     sequence:
       - researcher
       - architect
@@ -12,3 +15,67 @@ workflows:
       - nfr-checklist
       - security-privacy-checklist
       - cost-modeling-checklist
+    output: System Design Document
+
+  review-architecture:
+    description: "Severity-ranked governance review of an existing architecture document."
+    command: /review-architecture
+    sequence:
+      - evaluator
+    enforcement:
+      - architecture-patterns
+      - springboot-flutter-aws-playbook
+      - standards-definition
+    output: Architecture Review Report (scored, P0/P1/P2 findings)
+
+  # ── IMPLEMENT ───────────────────────────────────────────────────────────────
+  implement:
+    description: "Translates a system design into implementation blueprint: directory structures, DB DDL, API stubs, infra outlines, phased delivery plan."
+    command: /implement
+    sequence:
+      - implementer
+      - devops
+      - evaluator
+    enforcement:
+      - implementation-patterns
+      - springboot-flutter-aws-playbook
+    output: Implementation Plan (structures, schema, stubs, infra, delivery phases)
+
+  # ── TEST ────────────────────────────────────────────────────────────────────
+  generate-tests:
+    description: "Generates test strategy, test scaffolding, fixture builders, RAG eval config, and CI mapping for a given implementation."
+    command: /generate-tests
+    sequence:
+      - tester
+      - evaluator
+    enforcement:
+      - testing-playbook
+      - springboot-flutter-aws-playbook
+    output: Test Strategy + Scaffolding (unit, integration, contract, E2E, AI eval)
+
+  # ── REVIEW CODE ─────────────────────────────────────────────────────────────
+  review-code:
+    description: "Severity-ranked code review against engineering standards. Verdict: APPROVED / APPROVED WITH CONDITIONS / BLOCKED."
+    command: /review-code
+    sequence:
+      - code-reviewer
+      - evaluator
+    enforcement:
+      - code-review-standards
+      - springboot-flutter-aws-playbook
+      - architecture-patterns
+    output: Code Review Report (P0/P1/P2/P3 findings, verdict)
+
+  # ── FIX ─────────────────────────────────────────────────────────────────────
+  fix:
+    description: "Root cause analysis + targeted fix plan + regression tests + rollback strategy for a reported issue."
+    command: /fix
+    sequence:
+      - researcher
+      - fixer
+      - tester
+      - evaluator
+    enforcement:
+      - implementation-patterns
+      - testing-playbook
+    output: Fix Plan (RCA, immediate fix, preventive fix, regression tests, rollback)

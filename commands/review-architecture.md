@@ -15,10 +15,23 @@ This is a severity-ranked governance review.
 You must evaluate the provided architecture against:
 
 - skills/architecture-patterns.md
+- skills/springboot-flutter-aws-playbook.md (Spring Boot + Flutter + Python + RAG + Orchestration + AWS stack rules)
 - governance/standards/v1.0/standards-definition.md
 - references/nfr-checklist.md
 - references/security-privacy-checklist.md
 - references/cost-modeling-checklist.md
+
+If AI/RAG/Orchestration components are present in the architecture, additionally evaluate:
+- RAG pipeline stage separation (Ingestion / Retrieval / Generation / Evaluation)
+- Embedding model version pinning and re-indexing strategy on model upgrade
+- Vector DB index configuration (HNSW params, filter fields)
+- Retrieval latency SLO definition
+- Prompt version control and evaluation gate before production promotion
+- Orchestration pattern justification and agent state persistence
+- Tool schema completeness (name, input schema, output schema, timeout)
+- Hallucination guardrail strategy
+- Token usage observability and anomaly alerting
+- RAG evaluation framework with defined offline metrics (Faithfulness, Answer Relevance, Context Recall, Context Precision)
 
 ---
 
@@ -38,6 +51,7 @@ For each category, assess compliance:
 10. Cost awareness
 11. Rollback readiness
 12. Compliance with standards version
+13. AI/RAG/Orchestration design quality (if applicable)
 
 ---
 
@@ -95,17 +109,37 @@ List missing:
 - RTO/RPO
 - Alert thresholds
 
+If AI components present, also flag missing:
+- Embedding model version
+- Chunking strategy
+- RAG evaluation framework
+- Prompt version IDs
+- Orchestration pattern justification
+- Agent state persistence strategy
+- Hallucination guardrail definition
+- Token usage monitoring
+
 ---
 
 # 5. Architectural Anti-Patterns Detected
 
-Examples:
+General anti-patterns:
 
 - Tight coupling
 - Shared DB across services
 - No backpressure strategy
 - Unbounded retries
 - No schema evolution plan
+
+AI-specific anti-patterns to flag:
+- Coupling RAG ingestion to retrieval in the same service
+- No embedding model version pinning
+- Hardcoded top-K retrieval value
+- Raw chunk concatenation without structured separators
+- Agent loop with no turn limit or termination condition
+- LLM output passed directly to tool execution without validation
+- Synchronous LLM calls blocking the main request thread
+- No prompt version control or evaluation gate before production
 
 ---
 
@@ -124,6 +158,26 @@ Examples:
 - DB scaling strategy valid? (Yes/No)
 - Cost envelope defined? (Yes/No)
 - Optimization levers identified? (Yes/No)
+
+---
+
+# 7b. AI / RAG / Orchestration Assessment (if AI components present)
+
+- RAG pipeline stages separated? (Yes/No)
+- Embedding model version pinned? (Yes/No)
+- Vector DB index fully configured (HNSW params, filter fields)? (Yes/No)
+- Retrieval latency SLO defined? (Yes/No)
+- Re-ranking strategy defined? (Yes/No)
+- Prompt version control in place? (Yes/No)
+- Evaluation gate before prompt promotion? (Yes/No)
+- RAG eval framework defined with offline metrics? (Yes/No)
+- Hallucination guardrail strategy present? (Yes/No)
+- Orchestration pattern justified? (Yes/No)
+- Agent turn limit defined? (Yes/No)
+- Tool schemas complete (name/input/output/timeout)? (Yes/No)
+- Agent state persistence defined? (Yes/No)
+- Token usage monitoring and anomaly alerting defined? (Yes/No)
+- LLM fallback model defined? (Yes/No)
 
 ---
 
